@@ -34,6 +34,10 @@
       supportedSystems = flake-utils.lib.allSystems;
 
       lib.math = import ./default.nix {inherit (nixpkgs) lib;};
+      test.mathOutput = import ./tests/test.nix {
+        inherit (nixpkgs) lib;
+        inherit (self.lib) math;
+      };
 
       outputsBuilder = channels: let
         pkgs = channels.nixpkgs;

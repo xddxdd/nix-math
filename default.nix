@@ -1,28 +1,55 @@
 {lib, ...}: rec {
   pi = 3.1415926;
-  epsilon = 0.0000000001;
+  epsilon = 0.000001;
 
   sum = builtins.foldl' builtins.add 0;
   multiply = builtins.foldl' builtins.mul 1;
 
+  abs = x:
+    if x < 0
+    then 0 - x
+    else x;
+  fabs = abs;
+
+  arange = min: max: step: let
+    count = floor ((max - min) / step);
+  in
+    lib.genList (i: min + step * i) count;
+
+  arange2 = min: max: step: arange min (max + step) step;
+
   parseFloat = builtins.fromJSON;
 
-  floor = x: let
-    tmp = lib.toInt (builtins.head (lib.splitString "." (builtins.toString x)));
+  hasFraction = x: let
+    splitted = lib.splitString "." (builtins.toString x);
   in
-    if x < 0 && lib.hasInfix "." (builtins.toString x)
-    then tmp - 1
-    else tmp;
+    builtins.length splitted >= 2 && builtins.length (builtins.filter (ch: ch != "0") (lib.stringToCharacters (builtins.elemAt splitted 1))) > 0;
 
-  div = a: b:
-    if a < 0
-    then 0 - div (0 - a) b
-    else if b < 0
-    then 0 - div a (0 - b)
+  floor = x: let
+    splitted = lib.splitString "." (builtins.toString x);
+    num = lib.toInt (builtins.head splitted);
+  in
+    if x < 0 && (hasFraction x)
+    then num - 1
+    else num;
+
+  div = a: b: let
+    divideExactly = !(hasFraction (1.0 * a / b));
+    offset =
+      if divideExactly
+      then 0
+      else (0 - 1);
+  in
+    if b < 0
+    then offset - div a (0 - b)
+    else if a < 0
+    then offset - div (0 - a) b
     else floor (1.0 * a / b);
 
   mod = a: b:
-    if a < 0
+    if b < 0
+    then 0 - mod (0 - a) (0 - b)
+    else if a < 0
     then mod (b - mod (0 - a) b) b
     else a - b * (div a b);
 
@@ -50,7 +77,7 @@
     C = pi / 4 - A - B;
   in
     if x < 0
-    then atan (0 - x)
+    then -atan (0 - x)
     else if x > 1
     then pi / 2 - atan (1 / x)
     else ((A * x * x + B) * x * x + C) * x;
