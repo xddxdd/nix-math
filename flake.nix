@@ -8,17 +8,6 @@
     };
   };
 
-  # outputs = {
-  #   self,
-  #   nixpkgs,
-  # } @ inputs: let
-  #   systems = ["x86_64-linux" "aarch64-linux"];
-  # in {
-  #   lib = import ./default.nix {inherit (nixpkgs) lib;};
-
-  #   devShells = nixpkgs.lib.
-  # };
-
   outputs = {
     self,
     nixpkgs,

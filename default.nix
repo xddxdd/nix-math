@@ -5,17 +5,22 @@
   sum = builtins.foldl' builtins.add 0;
   multiply = builtins.foldl' builtins.mul 1;
 
+  # Absolute value of `x`
   abs = x:
     if x < 0
     then 0 - x
     else x;
+
+  # Absolute value of `x`
   fabs = abs;
 
+  # Create a list of numbers from `min` (inclusive) to `max` (exclusive), adding `step` each time.
   arange = min: max: step: let
     count = floor ((max - min) / step);
   in
     lib.genList (i: min + step * i) count;
 
+  # Create a list of numbers from `min` (inclusive) to `max` (inclusive), adding `step` each time.
   arange2 = min: max: step: arange min (max + step) step;
 
   parseFloat = builtins.fromJSON;
@@ -25,6 +30,7 @@
   in
     builtins.length splitted >= 2 && builtins.length (builtins.filter (ch: ch != "0") (lib.stringToCharacters (builtins.elemAt splitted 1))) > 0;
 
+  # Returns the largest integer that is smaller or equal to `x`.
   floor = x: let
     splitted = lib.splitString "." (builtins.toString x);
     num = lib.toInt (builtins.head splitted);
@@ -33,6 +39,7 @@
     then num - 1
     else num;
 
+  # Divide `a` by `b` with no remainder.
   div = a: b: let
     divideExactly = !(hasFraction (1.0 * a / b));
     offset =
@@ -46,6 +53,7 @@
     then offset - div (0 - a) b
     else floor (1.0 * a / b);
 
+  # Modulos of dividing `a` by `b`.
   mod = a: b:
     if b < 0
     then 0 - mod (0 - a) (0 - b)
@@ -53,11 +61,14 @@
     then mod (b - mod (0 - a) b) b
     else a - b * (div a b);
 
+  # Returns `a` to the power of `b`. **Only supports integer for `b`!**
   pow = x: times: multiply (lib.replicate times x);
 
+  # Returns factorial of `x`. `x` is an integer, `x >= 0`.
   factorial = x: multiply (lib.range 1 x);
 
-  # Taylor series: for x >= 0, atan(x) = x - x^3/3! + x^5/5!
+  # Trigonometric function. Takes radian as input.
+  # Taylor series: for x >= 0, sin(x) = x - x^3/3! + x^5/5! - ...
   sin = x: let
     x' = mod (1.0 * x) (2 * pi);
     step = i: (pow (0 - 1) (i - 1)) * multiply (lib.genList (j: x' / (j + 1)) (i * 2 - 1));
@@ -72,10 +83,13 @@
     then -sin (0 - x)
     else helper 0 1;
 
+  # Trigonometric function. Takes radian as input.
   cos = x: sin (0.5 * pi - x);
 
+  # Trigonometric function. Takes radian as input.
   tan = x: (sin x) / (cos x);
 
+  # Arctangent function.
   # https://stackoverflow.com/questions/42537957/fast-accurate-atan-arctan-approximation-algorithm
   atan = x: let
     A = 0.0776509570923569;
@@ -88,13 +102,16 @@
     then pi / 2 - atan (1 / x)
     else ((A * x * x + B) * x * x + C) * x;
 
+  # Degrees to radian.
   deg2rad = x: x * pi / 180;
 
+  # Square root of `x`. `x >= 0`.
   sqrt = x:
     if x < epsilon
     then 0
     else builtins.foldl' (i: _: (i + 1.0 * x / i) / 2) (1.0 * x) (lib.range 1 10);
 
+  # Returns distance of two points on Earth for the given latitude/longitude.
   # https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
   haversine = lat1: lon1: lat2: lon2: let
     radius = 6371000;
