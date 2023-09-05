@@ -106,10 +106,17 @@
   deg2rad = x: x * pi / 180;
 
   # Square root of `x`. `x >= 0`.
-  sqrt = x:
+  sqrt = x: let
+    helper = tmp: let
+      value = (tmp + 1.0 * x / tmp) / 2;
+    in
+      if (fabs (value - tmp)) < epsilon
+      then value
+      else helper value;
+  in
     if x < epsilon
     then 0
-    else builtins.foldl' (i: _: (i + 1.0 * x / i) / 2) (1.0 * x) (lib.range 1 10);
+    else helper (1.0 * x);
 
   # Returns distance of two points on Earth for the given latitude/longitude.
   # https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula

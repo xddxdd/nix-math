@@ -4,7 +4,7 @@ import numpy as np
 import os
 import subprocess
 
-EPSILON = 1e-10;
+EPSILON = 1e-6;
 SCRIPT_PATH = os.path.realpath(os.path.dirname(__file__))
 FLAKE_PATH = os.path.realpath(os.path.join(SCRIPT_PATH, ".."))
 
@@ -23,10 +23,10 @@ def compare_ratio(error: float, epsilon: float = EPSILON):
 
 comparators = {
     "atan": compare_ratio(0.01),
-    "sin": compare_ratio(0.001),
-    "cos": compare_ratio(0.001),
-    "tan": compare_ratio(0.001),
-    "deg2rad": compare_ratio(0.001),
+    "sin": compare_ratio(0.0001),
+    "cos": compare_ratio(0.0001),
+    "tan": compare_ratio(0.0001),
+    "deg2rad": compare_ratio(0.0001),
 }
 
 ground_truths = {
