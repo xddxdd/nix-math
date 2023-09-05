@@ -61,10 +61,16 @@
   sin = x: let
     x' = mod (1.0 * x) (2 * pi);
     step = i: (pow (0 - 1) (i - 1)) * multiply (lib.genList (j: x' / (j + 1)) (i * 2 - 1));
+    helper = tmp: i: let
+      value = step i;
+    in
+      if (fabs value) < epsilon
+      then tmp
+      else helper (tmp + value) (i + 1);
   in
     if x < 0
     then -sin (0 - x)
-    else sum (lib.genList (i: step (i + 1)) 10);
+    else helper 0 1;
 
   cos = x: sin (0.5 * pi - x);
 
