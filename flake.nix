@@ -47,6 +47,14 @@
             numpy
           ]);
       in {
+        apps.default = {
+          type = "app";
+          program = builtins.toString (pkgs.writeShellScript "test" ''
+            set -euo pipefail
+            exec ${python3}/bin/python3 ${self}/tests/test.py
+          '');
+        };
+
         devShells.default = python3.env;
       };
     };

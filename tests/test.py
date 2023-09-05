@@ -5,6 +5,8 @@ import os
 import subprocess
 
 EPSILON = 1e-10;
+SCRIPT_PATH = os.path.realpath(os.path.dirname(__file__))
+FLAKE_PATH = os.path.realpath(os.path.join(SCRIPT_PATH, ".."))
 
 def compare_absolute(epsilon: float):
     def fn(expected: float, actual: float) -> bool:
@@ -23,7 +25,7 @@ comparators = {
     "atan": compare_ratio(0.01),
     "sin": compare_ratio(0.001),
     "cos": compare_ratio(0.001),
-    "tan": compare_ratio(0.01),
+    "tan": compare_ratio(0.001),
     "deg2rad": compare_ratio(0.001),
 }
 
@@ -50,7 +52,7 @@ ground_truths = {
     "sqrt": np.sqrt,
 }
 
-actual_results = json.loads(subprocess.check_output(["nix", "eval", "--raw", ".#test.mathOutput"], stderr=subprocess.DEVNULL))
+actual_results = json.loads(subprocess.check_output(["nix", "eval", "--raw", f"{FLAKE_PATH}#test.mathOutput"], stderr=subprocess.DEVNULL))
 
 test_success = 0
 test_fail = 0
