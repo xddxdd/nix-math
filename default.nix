@@ -1,4 +1,6 @@
 {lib, ...}: rec {
+  inherit (builtins) floor ceil;
+
   pi = 3.1415926;
   epsilon = 0.000001;
 
@@ -29,15 +31,6 @@
     splitted = lib.splitString "." (builtins.toString x);
   in
     builtins.length splitted >= 2 && builtins.length (builtins.filter (ch: ch != "0") (lib.stringToCharacters (builtins.elemAt splitted 1))) > 0;
-
-  # Returns the largest integer that is smaller or equal to `x`.
-  floor = x: let
-    splitted = lib.splitString "." (builtins.toString x);
-    num = lib.toInt (builtins.head splitted);
-  in
-    if x < 0 && (hasFraction x)
-    then num - 1
-    else num;
 
   # Divide `a` by `b` with no remainder.
   div = a: b: let

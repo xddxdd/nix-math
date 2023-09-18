@@ -31,8 +31,6 @@ comparators = {
 
 ground_truths = {
     "fabs": np.fabs,
-    "floor": np.floor,
-    "floor_int": np.floor,
     "div_3": lambda x: x // 3,
     "div_3_int": lambda x: x // 3,
     "div_4.5": lambda x: x // 4.5,
