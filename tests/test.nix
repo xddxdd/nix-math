@@ -14,8 +14,6 @@
 
   tests = {
     "fabs" = testRange (0 - 2) 2 0.1 math.fabs;
-    "floor" = testRange (0 - 2) 2 0.1 math.floor;
-    "floor_int" = testOnInputs (builtins.genList (x: x - 5) 11) math.floor;
     "div_3" = testRange (0 - 10) 10 0.1 (x: math.div x 3);
     "div_3_int" = testOnInputs (builtins.genList (x: x - 5) 11) (x: math.div x 3);
     "div_4.5" = testRange (0 - 10) 10 0.1 (x: math.div x 4.5);

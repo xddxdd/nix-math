@@ -28,7 +28,6 @@ Experimental mathematical library in pure Nix, using no external library.
 - `abs [x]`, `fabs [x]`: Absolute value of `x`
 - `arange [min] [max] [step]`: Create a list of numbers from `min` (inclusive) to `max` (exclusive), adding `step` each time.
 - `arange2 [min] [max] [step]`: Same as `arange`, but includes `max` as well.
-- `floor [x]`: Returns the largest integer that is smaller or equal to `x`.
 - `div [a] [b]`: Divide `a` by `b` with no remainder.
 - `mod [a] [b]`: Modulos of dividing `a` by `b`.
 - `pow [a] [b]`: Returns `a` to the power of `b`. **Only supports integer for `b`!**
