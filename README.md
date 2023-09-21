@@ -40,14 +40,14 @@ Experimental mathematical library in pure Nix, using no external library.
 
 ## Implementation Details
 
-- `sin` function is implemented with its Taylor series: for `x >= 0`, `sin(x) = x - x^3/3! + x^5/5!`. Calculation is repeated until the next value in series is less than epsilon (`1e-6`).
+- `sin` function is implemented with its Taylor series: for `x >= 0`, `sin(x) = x - x^3/3! + x^5/5!`. Calculation is repeated until the next value in series is less than epsilon (`1e-10`).
 - `cos` is `sin (pi/2 - x)`.
 - `tan` is `sin x / cos x`.
-  - For `sin`, `cos` and `tan`, result error is within 0.01% as checked by unit test.
+  - For `sin`, `cos` and `tan`, result error is within 0.0001% as checked by unit test.
 - `atan` is implemented with this estimation algorithm: <https://stackoverflow.com/a/42542593>. This is faster and more accurate than using `atan`'s Taylor series, because its Taylor series does not converge as fast as `sin`.
-  - For `atan`, result error is within 1%.
-- `sqrt` is implemented with Newtonian method. Calculation is repeated until the next value is less than epsilon (`1e-6`).
-  - For `sqrt`, result error is within `1e-6`.
+  - For `atan`, result error is within 0.0001%.
+- `sqrt` is implemented with Newtonian method. Calculation is repeated until the next value is less than epsilon (`1e-10`).
+  - For `sqrt`, result error is within `1e-10`.
 - `haversine` is implemented based on <https://stackoverflow.com/a/27943>.
 
 ## Unit test

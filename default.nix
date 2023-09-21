@@ -1,8 +1,8 @@
 {lib, ...}: rec {
   inherit (builtins) floor ceil;
 
-  pi = 3.1415926;
-  epsilon = 0.000001;
+  pi = 3.14159265358979323846264338327950288;
+  epsilon = pow (0.1) 10;
 
   sum = builtins.foldl' builtins.add 0;
   multiply = builtins.foldl' builtins.mul 1;
@@ -24,6 +24,12 @@
 
   # Create a list of numbers from `min` (inclusive) to `max` (inclusive), adding `step` each time.
   arange2 = min: max: step: arange min (max + step) step;
+
+  # Calculate x^0*poly[0] + x^1*poly[1] + ... + x^n*poly[n]
+  polynomial = x: poly: let
+    step = i: (pow x i) * (builtins.elemAt poly i);
+  in
+    sum (lib.genList step (builtins.length poly));
 
   parseFloat = builtins.fromJSON;
 
@@ -82,18 +88,27 @@
   # Trigonometric function. Takes radian as input.
   tan = x: (sin x) / (cos x);
 
-  # Arctangent function.
-  # https://stackoverflow.com/questions/42537957/fast-accurate-atan-arctan-approximation-algorithm
+  # Arctangent function. Polynomial approximation.
   atan = x: let
-    A = 0.0776509570923569;
-    B = 0 - 0.287434475393028;
-    C = pi / 4 - A - B;
+    poly = [
+      0.0000000
+      0.9999991
+      0.0000366
+      (0 - 0.3339528)
+      0.0056430
+      0.1691462
+      0.1069422
+      (0 - 0.3814731)
+      0.3316130
+      (0 - 0.1347978)
+      0.0222419
+    ];
   in
     if x < 0
     then -atan (0 - x)
     else if x > 1
     then pi / 2 - atan (1 / x)
-    else ((A * x * x + B) * x * x + C) * x;
+    else polynomial x poly;
 
   # Degrees to radian.
   deg2rad = x: x * pi / 180;
