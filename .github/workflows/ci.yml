@@ -22,6 +22,9 @@ jobs:
             extra-platforms = i686-linux aarch64-linux arm-linux
             log-lines = 25
 
+      - name: Setup GitHub Actions cache for Nix
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
       - name: Run unit test
         run: |
           nix run .
