@@ -36,6 +36,7 @@
           python3 = pkgs.python3.withPackages (
             ps: with ps; [
               numpy
+              pytest
             ]
           );
         in
@@ -45,7 +46,7 @@
             program = builtins.toString (
               pkgs.writeShellScript "test" ''
                 set -euo pipefail
-                exec ${python3}/bin/python3 ${self}/tests/test.py
+                exec ${python3}/bin/python3 -m pytest --verbose ${self}/tests/test.py
               ''
             );
           };
