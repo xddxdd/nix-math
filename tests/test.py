@@ -31,8 +31,6 @@ comparators = {
     "log_small": compare_ratio(0.000001),
     "log10": compare_ratio(0.000001),
     "log2": compare_ratio(0.000001),
-    "pow_0": compare_ratio(0.000001),
-    "pow_3": compare_ratio(0.000001),
     "pow_-2.5": compare_ratio(0.000001),
     "pow_4.5": compare_ratio(0.000001),
     "sin": compare_ratio(0.000001),

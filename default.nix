@@ -160,15 +160,15 @@ rec {
   # pow(x, y) = exp(y * log(x)), plus a few edge cases.
   pow =
     x: times:
-    if x == 0 then
+    let
+      is_int_times = abs (times - int times) < epsilon;
+    in
+    if is_int_times then
+      _pow_int x (int times)
+    else if x == 0 then
       0
     else if x < 0 then
-      (
-        if fabs (times - int times) < epsilon then
-          _pow_int x times
-        else
-          throw "Calculating power of negative base and decimal exponential is not supported"
-      )
+      throw "Calculating power of negative base and decimal exponential is not supported"
     else
       exp (times * log x);
 
