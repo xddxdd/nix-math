@@ -2,15 +2,20 @@
   lib,
   math,
   ...
-}: let
-  testOnInputs = inputs: fn:
-    builtins.listToAttrs (builtins.map (v: {
+}:
+let
+  testOnInputs =
+    inputs: fn:
+    builtins.listToAttrs (
+      builtins.map (v: {
         name = builtins.toString v;
         value = fn v;
-      })
-      inputs);
+      }) inputs
+    );
 
-  testRange = min: max: step: testOnInputs (math.arange2 min max step);
+  testRange =
+    min: max: step:
+    testOnInputs (math.arange2 min max step);
 
   tests = {
     "fabs" = testRange (0 - 2) 2 0.001 math.fabs;
@@ -33,4 +38,4 @@
     "sqrt" = testRange 0 10 0.001 math.sqrt;
   };
 in
-  builtins.toJSON tests
+builtins.toJSON tests
