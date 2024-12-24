@@ -27,6 +27,14 @@ comparators = {
     "cos": compare_ratio(0.000001),
     "tan": compare_ratio(0.000001),
     "deg2rad": compare_ratio(0.000001),
+    "exp_large": compare_ratio(0.000001),
+    "exp_small": compare_ratio(0.000001),
+    "log_large": compare_ratio(0.000001),
+    "log_small": compare_ratio(0.000001),
+    "log2": compare_ratio(0.000001),
+    "log10": compare_ratio(0.000001),
+    "powf_4.5": compare_ratio(0.000001),
+    "powf_-2.5": compare_ratio(0.000001),
 }
 
 ground_truths = {
@@ -46,23 +54,36 @@ ground_truths = {
     "cos": np.cos,
     "tan": np.tan,
     "atan": np.arctan,
+    "int": int,
+    "exp_large": np.exp,
+    "exp_small": np.exp,
+    "log_large": np.log,
+    "log_small": np.log,
+    "log2": np.log2,
+    "log10": np.log10,
+    "powf_4.5": lambda x: np.power(4.5, x),
+    "powf_-2.5": lambda x: np.power(-2.5, x),
     "deg2rad": np.deg2rad,
     "sqrt": np.sqrt,
 }
 
-actual_results = json.loads(subprocess.check_output(["nix", "eval", "--raw", f"{FLAKE_PATH}#test.mathOutput"], stderr=subprocess.DEVNULL))
-
 test_success = 0
 test_fail = 0
-for test_item, test_results in actual_results.items():
-    comparator = comparators.get(test_item, compare_absolute(EPSILON))
-    for input, output in test_results.items():
-        expected = ground_truths[test_item](float(input))
-        if comparator(expected, output):
-            test_success += 1
-        else:
-            test_fail += 1
-            print(f"FAIL: test {test_item} input {input} expected {expected} actual {output}")
+
+for test_item in ground_truths.keys():
+    try:
+        test_results = json.loads(subprocess.check_output(["nix", "eval", "--raw", f"{FLAKE_PATH}#test.mathOutput.\"{test_item}\""]))
+        comparator = comparators.get(test_item, compare_absolute(EPSILON))
+        for input, output in test_results.items():
+            expected = ground_truths[test_item](float(input))
+            if comparator(expected, output):
+                test_success += 1
+            else:
+                test_fail += 1
+                print(f"FAIL: test {test_item} input {input} expected {expected} actual {output}")
+    except subprocess.CalledProcessError as e:
+        test_fail += 1
+        print(f"FAIL: test {test_item} caused nix error")
 
 print(f"{test_success}/{test_success+test_fail} tests succeeded.")
 exit(1 if test_fail else 0)

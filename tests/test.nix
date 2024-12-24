@@ -34,8 +34,17 @@ let
     "cos" = testRange (0 - 10) 10 0.001 math.cos;
     "tan" = testRange (0 - 10) 10 0.001 math.tan;
     "atan" = testRange (0 - 10) 10 0.001 math.atan;
+    "int" = testRange (0 - 10) 10 0.001 math.int;
+    "exp_large" = testRange (0 - 700) 700 0.1 math.exp;
+    "exp_small" = testRange (0 - 2) 2 0.001 math.exp;
+    "log_large" = testRange 1 10000 1 math.log;
+    "log_small" = testRange 0.001 2 0.001 math.log;
+    "log2" = testRange 1 10000 1 math.log2;
+    "log10" = testRange 1 10000 1 math.log10;
+    "powf_4.5" = testRange 1 100 0.01 (math.pow 4.5);
+    "powf_-2.5" = testRange 1 100 1 (math.pow (0 - 2.5));
     "deg2rad" = testRange (0 - 360) 360 0.001 math.deg2rad;
     "sqrt" = testRange 0 10 0.001 math.sqrt;
   };
 in
-builtins.toJSON tests
+lib.mapAttrs (k: builtins.toJSON) tests
