@@ -13,6 +13,7 @@ Experimental mathematical library in pure Nix, using no external library.
 
 - This library does not support these features. ALthough I added exceptions for some situations, this is by no means comprehensive. Please consider these as undefined behaviors, and submit an issue when you encounter one.
   - Floating point infinity (+inf, -inf)
+  - NaN
   - Floating power overflow and underflow
   - Operations where the value is extremely small (around `1e-38`) or extremely large (around `1e38`)
   - Imaginary numbers
