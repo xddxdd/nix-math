@@ -30,8 +30,8 @@ let
     "fabs" = testRange (0 - 2) 2 0.001 math.fabs;
     "factorial" = testRange 0 10 1 math.factorial;
     "int" = testRange (0 - 10) 10 0.001 math.int;
-    "log_large" = testRange 1 10000 1 math.log;
-    "log_small" = testRange 0.001 2 0.001 math.log;
+    "ln_large" = testRange 1 10000 1 math.ln;
+    "ln_small" = testRange 0.001 2 0.001 math.ln;
     "log10" = testRange 1 10000 1 math.log10;
     "log2" = testRange 1 10000 1 math.log2;
     "mod_-2.5" = testRange (0 - 10) 10 0.001 (x: math.mod x (0 - 2.5));

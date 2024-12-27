@@ -48,8 +48,8 @@ Experimental mathematical library in pure Nix, using no external library.
 - `factorial [x]`: Returns factorial of `x`. `x` is an integer, `x >= 0`.
 - `haversine [lat1] [lon1] [lat2] [lon2]`: Returns distance of two points on Earth for the given latitude/longitude.
 - `int [x]`: Integer part of `x`.
-- `ln [a] [b]`: Logarithmetic function. Returns `ln_a b`.
-- `log [x]`: Logarithmetic function. Returns `log_e x`.
+- `ln [x]`: Logarithmetic function. Returns `log_e x`.
+- `log [a] [b]`: Logarithmetic function. Returns `log_a b`.
 - `log10 [x]`: Logarithmetic function. Returns `log_10 x`.
 - `log2 [x]`: Logarithmetic function. Returns `log_2 x`.
 - `mod [a] [b]`: Modulos of dividing `a` by `b`.

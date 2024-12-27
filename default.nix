@@ -129,14 +129,14 @@ rec {
     if x < 0 then 1 / (exp (0 - x)) else (_pow_int e x_int) * (polynomial x_decimal decimal_poly);
 
   # Logarithmetic function. Takes radian as input.
-  # Taylor series: for 1 <= x <= 1.9, log(x) = (x-1)/1 - (x-1)^2/2 + (x-1)^3/3
+  # Taylor series: for 1 <= x <= 1.9, ln(x) = (x-1)/1 - (x-1)^2/2 + (x-1)^3/3
   #   (https://en.wikipedia.org/wiki/Logarithm#Taylor_series)
-  # For x >= 1.9, log(x) = 2 * log(sqrt(x))
-  # For 0 < x < 1, log(x) = -log(1/x)
+  # For x >= 1.9, ln(x) = 2 * ln(sqrt(x))
+  # For 0 < x < 1, ln(x) = -ln(1/x)
   #
   # Although Taylor series applies to 0 <= x <= 2, calculation outside
   # 1 <= x <= 1.9 is very slow and may cause max-call-depth exceeded
-  log =
+  ln =
     x:
     let
       step = i: (_pow_int (0 - 1) (i - 1)) * (_pow_int (1.0 * x - 1.0) i) / i;
@@ -148,16 +148,16 @@ rec {
         if (fabs value) < epsilon then tmp else helper (tmp + value) (i + 1);
     in
     if x <= 0 then
-      throw "log(x<=0) returns invalid value"
+      throw "ln(x<=0) returns invalid value"
     else if x < 1 then
-      -log (1 / x)
+      -ln (1 / x)
     else if x > 1.9 then
-      2 * (log (sqrt x))
+      2 * (ln (sqrt x))
     else
       helper 0 1;
 
   # Power function that supports float.
-  # pow(x, y) = exp(y * log(x)), plus a few edge cases.
+  # pow(x, y) = exp(y * ln(x)), plus a few edge cases.
   pow =
     x: times:
     let
@@ -170,11 +170,11 @@ rec {
     else if x < 0 then
       throw "Calculating power of negative base and decimal exponential is not supported"
     else
-      exp (times * log x);
+      exp (times * ln x);
 
-  ln = base: x: (log x) / (log base);
-  log2 = ln 2;
-  log10 = ln 10;
+  log = base: x: (ln x) / (ln base);
+  log2 = log 2;
+  log10 = log 10;
 
   # Degrees to radian.
   deg2rad = x: x * pi / 180;
