@@ -46,7 +46,8 @@ Experimental mathematical library in pure Nix, using no external library.
 - `exp [x]`: Exponential function. Returns `e^x`.
 - `fabs [x]`: Absolute value of `x`
 - `factorial [x]`: Returns factorial of `x`. `x` is an integer, `x >= 0`.
-- `haversine [lat1] [lon1] [lat2] [lon2]`: Returns distance of two points on Earth for the given latitude/longitude.
+- `haversine [lat1] [lon1] [lat2] [lon2]`: Returns distance of two points on Earth for the given latitude/longitude. Uses 6371km as Earth radius.
+- `haversine' [radius] [lat1] [lon1] [lat2] [lon2]`: Returns distance of two points on sphere for the given radius/latitude/longitude.
 - `int [x]`: Integer part of `x`.
 - `ln [x]`: Logarithmetic function. Returns `log_e x`.
 - `log [a] [b]`: Logarithmetic function. Returns `log_a b`.

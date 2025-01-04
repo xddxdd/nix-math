@@ -194,10 +194,10 @@ rec {
 
   # Returns distance of two points on Earth for the given latitude/longitude.
   # https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
-  haversine =
-    lat1: lon1: lat2: lon2:
+  haversine = haversine' 6371000;
+  haversine' =
+    radius: lat1: lon1: lat2: lon2:
     let
-      radius = 6371000;
       rad_lat = deg2rad ((1.0 * lat2) - (1.0 * lat1));
       rad_lon = deg2rad ((1.0 * lon2) - (1.0 * lon1));
       a =
@@ -208,6 +208,7 @@ rec {
           * (sin (rad_lon / 2))
           * (sin (rad_lon / 2));
       c = 2 * atan ((sqrt a) / (sqrt (1 - a)));
+      result = radius * c;
     in
-    radius * c;
+    if result < 0 then 0 else result;
 }
