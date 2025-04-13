@@ -8,7 +8,17 @@ let
     inputs: fn:
     builtins.listToAttrs (
       builtins.map (v: {
-        name = builtins.toString v;
+        # toJSON will output float upto precision limit
+        # toString will round the float, causing imprecisions during check
+        #
+        # Example:
+        #
+        # nix-repl> builtins.toJSON (0-10+0.001*9985)
+        # "-0.015000000000000568"
+        #
+        # nix-repl> builtins.toString (0-10+0.001*9985)
+        # "-0.015000"
+        name = builtins.toJSON v;
         value = fn v;
       }) inputs
     );
@@ -38,10 +48,13 @@ let
     "mod_3_int" = testOnInputs (builtins.genList (x: x - 5) 11) (x: math.mod x 3);
     "mod_3" = testRange (0 - 10) 10 0.001 (x: math.mod x 3);
     "mod_4.5" = testRange (0 - 10) 10 0.001 (x: math.mod x 4.5);
-    "pow_-2.5" = testRange 1 100 1 (math.pow (0 - 2.5));
-    "pow_0" = testRange (0 - 10) 10 0.001 (x: math.pow x 0);
-    "pow_3" = testRange (0 - 10) 10 0.001 (x: math.pow x 3);
-    "pow_4.5" = testRange 1 100 0.01 (math.pow 4.5);
+    "pow_-2.5_x" = testRange 1 100 1 (math.pow (0 - 2.5));
+    # Avoid `pow 0 -2` since that is undefined
+    "pow_x_-2_positive" = testRange 0.001 10 0.001 (x: math.pow x (0 - 2));
+    "pow_x_-2_negative" = testRange (0 - 10) (0 - 0.001) 0.001 (x: math.pow x (0 - 2));
+    "pow_x_0" = testRange (0 - 10) 10 0.001 (x: math.pow x 0);
+    "pow_x_3" = testRange (0 - 10) 10 0.001 (x: math.pow x 3);
+    "pow_4.5_x" = testRange 1 100 0.01 (math.pow 4.5);
     "sin" = testRange (0 - 10) 10 0.001 math.sin;
     "sqrt" = testRange 0 10 0.001 math.sqrt;
     "tan" = testRange (0 - 10) 10 0.001 math.tan;

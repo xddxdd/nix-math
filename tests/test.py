@@ -59,10 +59,12 @@ def get_nix_output(test_item: str) -> Dict[str, str]:
         ("mod_3_int", lambda x: x % 3, compare_absolute(EPSILON)),
         ("mod_3", lambda x: x % 3, compare_absolute(EPSILON)),
         ("mod_4.5", lambda x: x % 4.5, compare_absolute(EPSILON)),
-        ("pow_0", lambda x: np.power(x, 0), compare_absolute(EPSILON)),
-        ("pow_3", lambda x: np.power(x, 3), compare_absolute(EPSILON)),
-        ("pow_-2.5", lambda x: np.power(-2.5, x), compare_ratio(0.000001)),
-        ("pow_4.5", lambda x: np.power(4.5, x), compare_ratio(0.000001)),
+        ("pow_x_0", lambda x: np.power(x, 0), compare_absolute(EPSILON)),
+        ("pow_x_3", lambda x: np.power(x, 3), compare_absolute(EPSILON)),
+        ("pow_x_-2_positive", lambda x: np.power(x, -2), compare_absolute(EPSILON)),
+        ("pow_x_-2_negative", lambda x: np.power(x, -2), compare_absolute(EPSILON)),
+        ("pow_-2.5_x", lambda x: np.power(-2.5, x), compare_ratio(0.000001)),
+        ("pow_4.5_x", lambda x: np.power(4.5, x), compare_ratio(0.000001)),
         ("sin", np.sin, compare_ratio(0.000001)),
         ("sqrt", np.sqrt, compare_absolute(EPSILON)),
         ("tan", np.tan, compare_ratio(0.000001)),
@@ -77,7 +79,7 @@ def test_runner(
     has_failure = False
     for input, output in test_results.items():
         expected = ground_truth(float(input))
-        if not comparator(expected, output):
+        if not comparator(expected, float(output)):
             has_failure = True
             print(
                 f"FAIL: test {test_item} input {input} expected {expected} actual {output}"

@@ -17,7 +17,14 @@ rec {
 
   # Returns `a` to the power of `b`. **Only supports integer for `b`!**
   # Internal use only. Users should use `_pow_int`, which supports floating point exponentials.
-  _pow_int = x: times: multiply (lib.replicate times x);
+  _pow_int =
+    x: times:
+    if times == 0 then
+      1
+    else if times < 0 then
+      1 / (_pow_int x (0 - times))
+    else
+      multiply (lib.replicate times x);
 
   # Create a list of numbers from `min` (inclusive) to `max` (exclusive), adding `step` each time.
   arange =
