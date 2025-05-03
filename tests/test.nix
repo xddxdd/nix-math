@@ -55,6 +55,7 @@ let
     "pow_x_0" = testRange (0 - 10) 10 0.001 (x: math.pow x 0);
     "pow_x_3" = testRange (0 - 10) 10 0.001 (x: math.pow x 3);
     "pow_4.5_x" = testRange 1 100 0.01 (math.pow 4.5);
+    "round" = testRange (0 - 10) 10 0.001 math.round;
     "sin" = testRange (0 - 10) 10 0.001 math.sin;
     "sqrt" = testRange 0 10 0.001 math.sqrt;
     "tan" = testRange (0 - 10) 10 0.001 math.tan;

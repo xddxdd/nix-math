@@ -51,6 +51,20 @@ rec {
 
   int = x: if x < 0 then -int (0 - x) else builtins.floor x;
 
+  round =
+    x:
+    let
+      intPart = builtins.floor x;
+      intIsEven = 0 == mod intPart 2;
+      fractionPart = x - intPart;
+    in
+    if abs (fractionPart - 0.5) < epsilon then
+      if intIsEven then intPart else intPart + 1
+    else if fractionPart < 0.5 then
+      intPart
+    else
+      intPart + 1;
+
   hasFraction =
     x:
     let

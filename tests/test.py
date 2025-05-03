@@ -65,6 +65,7 @@ def get_nix_output(test_item: str) -> Dict[str, str]:
         ("pow_x_-2_negative", lambda x: np.power(x, -2), compare_absolute(EPSILON)),
         ("pow_-2.5_x", lambda x: np.power(-2.5, x), compare_ratio(0.000001)),
         ("pow_4.5_x", lambda x: np.power(4.5, x), compare_ratio(0.000001)),
+        ("round", np.round, compare_absolute(EPSILON)),
         ("sin", np.sin, compare_ratio(0.000001)),
         ("sqrt", np.sqrt, compare_absolute(EPSILON)),
         ("tan", np.tan, compare_ratio(0.000001)),

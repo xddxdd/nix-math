@@ -55,6 +55,7 @@ Experimental mathematical library in pure Nix, using no external library.
 - `log2 [x]`: Logarithmetic function. Returns `log_2 x`.
 - `mod [a] [b]`: Modulos of dividing `a` by `b`.
 - `pow [a] [b]`: Returns `a` to the power of `b`. Now supports floating point `b`.
+- `round [x]`: Round `x` to the nearest integer. For input ending with `.5`, will round to the nearest even number (same logic as `np.round`).
 - `sin [x]`: Trigonometric function. Takes radian as input.
 - `sqrt [x]`: Square root of `x`. `x >= 0`.
 - `tan [x]`: Trigonometric function. Takes radian as input.
